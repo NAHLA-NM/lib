@@ -2,21 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bookstore - Cart</title>
+    <title>Shopping Cart</title>
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f6f8;
-            padding: 20px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(to right, #4a90e2, #357abd);
+            color: white;
+            padding: 10px 20px;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+        .logo-section img {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 50%;
+            background: white;
+            padding: 5px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+            color: #ffd166;
         }
         h2 {
             color: #357abd;
             text-align: center;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
         table {
-            width: 100%;
+            width: 90%;
+            margin: auto;
             border-collapse: collapse;
             background: white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
@@ -32,11 +62,6 @@
         }
         tr:hover {
             background-color: #f0f7ff;
-        }
-        img {
-            width: 50px;
-            height: auto;
-            border-radius: 4px;
         }
         .price {
             font-weight: bold;
@@ -57,42 +82,78 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            transition: background-color 0.3s;
         }
         .checkout-btn:hover {
             background-color: #285d8f;
         }
+        .remove-btn {
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background-color: darkred;
+        }
     </style>
 </head>
 <body>
-    <h2>Your Shopping Cart</h2>
-    <table>
-        <tr>
-            <th>Cover</th>
-            <th>Book Title</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Remove</th>
-        </tr>
-        <tr>
-            <td><img src="xml.jpg" alt="XML Bible"></td>
-            <td>XML Bible</td>
-            <td>1</td>
-            <td class="price">₹40.50</td>
-            <td><button>Remove</button></td>
-        </tr>
-        <tr>
-            <td><img src="java.jpg" alt="Java 2"></td>
-            <td>Java 2</td>
-            <td>2</td>
-            <td class="price">₹71.00</td>
-            <td><button>Remove</button></td>
-        </tr>
-        <tr class="total-row">
-            <th colspan="3">Total</th>
-            <th colspan="2" class="price">₹111.50</th>
-        </tr>
-    </table>
-    <button class="checkout-btn"><a href="thanks.html"> to Checkout</a></button>
+
+<h2>Your Shopping Cart</h2>
+
+<table id="cartTable">
+    <tr>
+        <th>Department</th>
+        <th>Book Title</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+        <th>Remove</th>
+    </tr>
+    <tr>
+        <td>CSE</td>
+        <td>XML Bible</td>
+        <td class="price">₹40.50</td>
+        <td>1</td>
+        <td class="price">₹40.50</td>
+        <td><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
+    </tr>
+    <tr>
+        <td>ECE</td>
+        <td>Artificial Intelligence</td>
+        <td class="price">₹63.00</td>
+        <td>2</td>
+        <td class="price">₹126.00</td>
+        <td><button class="remove-btn" onclick="removeItem(this)">Remove</button></td>
+    </tr>
+    <tr class="total-row">
+        <th colspan="4">Total</th>
+        <th class="price" id="totalAmount">₹166.50</th>
+        <th></th>
+    </tr>
+</table>
+
+<button class="checkout-btn" onclick="window.location.href='payment.html'">Proceed to Checkout</button>
+
+<script>
+    function removeItem(button) {
+        const row = button.parentElement.parentElement;
+        const amountCell = row.cells[4];
+        let amount = parseFloat(amountCell.innerText.replace('₹', ''));
+
+        // Remove row
+        row.remove();
+
+        // Update total
+        const totalElement = document.getElementById('totalAmount');
+        let currentTotal = parseFloat(totalElement.innerText.replace('₹', ''));
+        let newTotal = currentTotal - amount;
+        totalElement.innerText = `₹${newTotal.toFixed(2)}`;
+    }
+</script>
+
 </body>
 </html>
+
